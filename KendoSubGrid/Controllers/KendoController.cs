@@ -21,6 +21,12 @@ namespace KendoSubGrid.Controllers
             var employees = context.EmpKendodata.ToList();
             return Json(employees);
         }
+        //[HttpGet]
+        //public IActionResult GetOrders()
+        //{
+        //    var orders = context.Orders.ToList();
+        //    return Json(orders);
+        //}
         [HttpGet]
         public IActionResult GetOrders(int employeeId)
         {
