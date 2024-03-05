@@ -1,0 +1,62 @@
+﻿@model IEnumerable<KendoSubGrid.Models.Employee>
+<link rel="stylesheet" href="https://kendo.cdn.telerik.com/themes/7.0.2/default/default-main.css" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<script src="https://kendo.cdn.telerik.com/2023.2.829/mjs/kendo.all.js" type="module"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.js"></script>
+
+
+<div id="grid"></div>
+<script>
+    $(document).ready(function () {
+        var element = $("#grid").kendoGrid({
+            dataSource: {
+                type: "json",
+                transport: {
+                    read: {
+                        url: "/Kendo/GetData",
+                        dataType: "json"
+                    }
+                },
+                pageSize: 10
+            },
+            columns: [
+                { field: "firstName", title: "First Name", width: "110px" },
+                { field: "lastName", title: "Last Name", width: "110px" },
+                { field: "country", width: "110px" },
+                { field: "city", width: "110px" },
+                { field: "title" }
+            ],
+            detailInit: detailInit
+        });
+    });
+
+    function detailInit(e) {
+        $("<div/>").appendTo(e.detailCell).kendoGrid({
+            dataSource: {
+                type: "json",
+                transport: {
+                    read: {
+                        url: "/Kendo/GetOrders?employeeId=" + e.data.EmployeeID,
+                        dataType: "json"
+                    }
+                },
+                pageSize: 5
+            },
+            columns: [
+                { field: "orderID", title: "Order ID", width: "110px" },
+                { field: "shipCountry", title: "Ship Country", width: "110px" },
+                { field: "shipAddress", title: "Ship Address" },
+                { field: "shipName", title: "Ship Name", width: "300px" }
+            ]
+        });
+    }
+</script>
